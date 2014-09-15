@@ -1,0 +1,52 @@
+---
+title: 'Exercises: Chapter 3'
+author: "LinMod"
+date: "Monday, September 15, 2014"
+output:
+  pdf_document:
+    fig_caption: yes
+---
+
+#####3-1
+
+The running proportions plot.
+
+```{r cdf, echo=TRUE}
+# Goal: toss a coin N times and get the running proportion of heads
+N <- 500
+p.heads <- 0.8 # Assume biased coin
+
+# Heads = 1, Tails=0
+flipsequence <- sample(x=c(0,1), prob=c(1-p.heads,p.heads), size=N, replace=TRUE) 
+
+r <- cumsum(flipsequence)
+n <- 1:N
+
+runprop <- r/n
+```
+
+```{r cdf_plot, echo=FALSE, message=FALSE, fig.cap="Running Proportions Plot, # of Heads"}
+plot(n, runprop, type="o", ylim=c(0,1), xlim=c(1,N), log='x', ylab="Proportion Heads", xlab="Flip Number", lwd="1", col="blue")
+lines(c(1, N), c(p.heads, p.heads), lty=3)
+```
+
+\newpage
+
+#####3-2 
+
+Detemine the probability of drawing a 10 from a pinochle deck (9-Ace, 6 of each). 
+
+To do this, we will randomly sample from the deck and see what proportion are tens.
+
+```{r, echo=TRUE}
+cards <- c("9", "10", "Jack", "Queen", "King", "Ace")
+suits <- c("Hearts", "Diamonds", "Spades", "Clubs")
+
+draws <- cbind.data.frame(sample(cards, size=1000000, replace=TRUE), 
+                          sample(suits, size=1000000, replace=TRUE))
+
+length(draws[which(draws[,1]=='10'),1])/length(draws[,1])
+length(draws[which(draws[,1]=='10'|draws[,1]=='Jack'),1])/length(draws[,1])
+```
+
+Thus, we estimate that the probability of drawing a jack is `r round(length(draws[which(draws[,1]=='10'),1])/length(draws[,1]),3)` and the probability of drawing a 10 or a jack is `r round(length(draws[which(draws[,1]=='10'|draws[,1]=='Jack'),1])/length(draws[,1]),3)`.
