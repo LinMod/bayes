@@ -1,0 +1,40 @@
+---
+title: "Chapter 2 - Exercises"
+author: "LinMod"
+date: "Sunday, September 14, 2014"
+output: pdf_document
+---
+
+#####2-2
+
+Define dice models.
+
+```{r models, echo=TRUE, message=FALSE, error=FALSE, warning=FALSE}
+dice.a <- function(x) {replicate(length(x), .25)}
+dice.b <- function(x) {x/10}
+dice.c <- function(x) {12/(25*x)}
+dots <- 1:4
+```
+Once the models are defined, we get the output of each one for a probability density function.
+
+```{r figures, echo=FALSE, message=FALSE, fig.height=6}
+require(ggplot2)
+require(gridExtra)
+a <- qplot(dots, dice.a(dots), geom="bar", stat="identity", ylim=c(0,1), ylab="Model A")
+b <- qplot(dots, dice.b(dots), geom="bar", stat="identity", ylim=c(0,1), ylab="Model B")
+c <- qplot(dots, dice.c(dots), geom="bar", stat="identity", ylim=c(0,1), ylab="Model C")
+
+grid.arrange(a,b,c, ncol=1, main="Dice Probability Models", sub=textGrob("Model A is unbiased, Model B is biased toward larger values, \nand Model C is biased toward smaller values.", gp=gpar(fontsize=11)))
+```
+
+
+\newpage
+
+#####2-6
+
+Plot cubic function $y = x^3$ on the interval $x \in [-3, 3]$, using the simple `curve` function.
+
+```{r cubic, messge=FALSE}
+# x^3 from -3 to 3; y-axis label changed for style.
+curve(x^3, from=-3, to=3, ylab="f(x) = x^3", col="blue", lwd="3")
+```
