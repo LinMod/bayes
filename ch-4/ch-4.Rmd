@@ -1,0 +1,26 @@
+---
+title: "ch-4"
+author: "LinMod"
+date: "Tuesday, September 16, 2014"
+output: pdf_document
+---
+
+####Ex 4-1
+
+Estimate the true probability of having a disease, given that you tested positive.
+```{r disease1, echo=TRUE}
+
+D <-1/1000 # Probability of disease
+TD <- 0.99
+T_not_D <- 0.05
+
+post <- (TD*D)/(TD*D + T_not_D*(1-D))
+```
+
+The probability that you have the disease, given that you test positive, is `r post`. Now, we perform the same procedure, but this time, the prior distribution is the posterior from our previous calculation.
+
+```{r disease2, echo=FALSE}
+post2 <- ((1-TD)*post)/((1-TD)*post + (1-T_not_D)*(1-post))
+```
+
+Now, given that you tested negative, the probability that you have the disease is `r post2`. Chances are pretty good you don't have anything!
