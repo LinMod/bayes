@@ -7,7 +7,7 @@ output:
     fig_caption: yes
 ---
 
-#####3-1
+####3-1
 
 The running proportions plot.
 
@@ -32,7 +32,7 @@ lines(c(1, N), c(p.heads, p.heads), lty=3)
 
 \newpage
 
-#####3-2 
+####3-2 
 
 Detemine the probability of drawing a 10 from a pinochle deck (9-Ace, 6 of each). 
 
@@ -50,3 +50,59 @@ length(draws[which(draws[,1]=='10'|draws[,1]=='Jack'),1])/length(draws[,1])
 ```
 
 Thus, we estimate that the probability of drawing a jack is `r round(length(draws[which(draws[,1]=='10'),1])/length(draws[,1]),3)` and the probability of drawing a 10 or a jack is `r round(length(draws[which(draws[,1]=='10'|draws[,1]=='Jack'),1])/length(draws[,1]),3)`.
+
+####3-3
+
+```{r ex3, echo=FALSE, results='asis', message=FALSE, error=FALSE, fig.cap = "PDF - $6x(1-x)$"}
+
+dx <- 0.01
+x <- seq(0,1,dx)
+y <- 6*x*(1-x)
+plot(x, y, type="h", ylab="p(x)", main="Probability Density function", lwd="1")
+lines(x,y, lwd="1")
+area <- sum(dx*y)
+```
+
+From this plot, we estimate that the area underneath the curve is $$\sum^n_ip(x_i)\delta x$$
+which is estimated numerically by `R` as `r area`. Analytically, the solution is
+
+$$\int 6x(1-x)\delta x = \int (6x-6x^2)\delta x$$
+$$=\int 6x\delta x - \int 6x^2\delta x$$
+$$= 3x^2 \vert^1_0 - 2x^3 \vert^1_0$$
+$$= (3-2) - (0-0)$$
+$$ =1$$
+
+Thus, because the area under the curve is 1, $p(x)$ is a probability density function, and satisfies $Equation 3.3$.
+
+####3-4
+
+#####A)
+
+```{r normal, echo=FALSE}
+mean <- 0 # Plot mean value
+stdval <- 1 # State standard dev
+xlow <- mean - 3*stdval # Determine x low
+xhigh <- mean + 3*stdval # Determine higher x lim
+dx <- 0.02 # determine small change
+x <- seq(xlow, xhigh, dx) # Generate seq of x's
+y <- (1/(stdval * sqrt(2*pi))) * exp(-0.5 * ((x-mean)/stdval)^2) # Get y values for each x
+
+plot(x,y, type="h", xlim=c(-3,3))
+lines(x,y)
+```
+
+This is the distribution $Y \sim N(0,1)$.
+
+#####B)
+This statement is essentially that we believe 68% of women will fall within the range of 147cm and 177cm in height, with the average woman's height at 162cm.
+
+####3-5
+
+|       | Ice | Fruit | French Fries|
+|-------|---- | ------| ------------|
+| 1st   | .25 | 0.6   | 0.125       |
+| 6th   | 0.5 | 0.3   | 0.125       |
+| 11th  | 0.25| 0.1   | 0.75        |
+
+
+From this table, which represents $p(grade|snack)$, clearly shows that, given that ice cream is a favorite food, there is a $50\%$ chance that the subject is a 6th grader. Given that fruit is the favorite food, there is a $60\%$ chance that the subject is a 1st grader.  And given that French Fries are the favorite food, there is a $75\%$ that the subject is an 11th grader.  Therefore, we conclude that these probabilities are not independent.
