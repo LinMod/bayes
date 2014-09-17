@@ -1,0 +1,39 @@
+---
+title: "Chapter-5"
+author: "LinMod"
+date: "Wednesday, September 17, 2014"
+output: html_document
+---
+
+*5-1*
+
+Note: The dashed line represents the posterior distribution, while the solid line represents the prior.
+
+**A)** Let $Y$ be the event that a coin toss lands on heads. Then $Y \sim B(\theta \vert 4,4)$ If we flip the coin again and see a head, then $Y \sim B(\theta \vert 4+1, 4) = B(\theta \vert 5,4)$.
+
+```{r plot1, echo=FALSE, results='asis', fig.height=4}
+plot(seq(0,1,0.01), dbeta(seq(0,1,0.01), 5, 4), type="l", axes=FALSE, lty="dashed", xlab="", ylab="")
+lines(seq(0,1,0.01), dbeta(seq(0,1,0.01), 4, 4))
+```
+
+The distributions are very similar, though not identical.
+
+**B)** Now suppose that $Y \sim B(\theta \vert 5,4)$. If we flip again and get another head, then our new distribution is $Y \sim B(\theta \vert 6,4)$.
+
+```{r plot2, echo=FALSE, results='asis', fig.height=4}
+plot(seq(0,1,0.01), dbeta(seq(0,1,0.01), 6, 4), type="l", axes=FALSE, lty="dashed", xlab="", ylab="")
+lines(seq(0,1,0.01), dbeta(seq(0,1,0.01), 5, 4))
+```
+
+Again, the distributions are similar, but not the same.
+
+**C)**
+
+Now, assume we get tails for the next coin flip. As you can see below, the distribution becomes both more symmetric and narrower.
+
+```{r plot3, echo=FALSE, results='asis', fig.height=4}
+plot(seq(0,1,0.01), dbeta(seq(0,1,0.01), 6, 5), type="l", axes=FALSE, lty="dashed", xlab="", ylab="")
+lines(seq(0,1,0.01), dbeta(seq(0,1,0.01), 6, 4))
+```
+
+It is important to note here that order does not matter - because the densities are conjugate, they are commutative. Each additional flip causes the posterior distribution to change.
