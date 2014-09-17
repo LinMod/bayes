@@ -23,4 +23,17 @@ The probability that you have the disease, given that you test positive, is `r p
 post2 <- ((1-TD)*post)/((1-TD)*post + (1-T_not_D)*(1-post))
 ```
 
+####Ex 4-2
+
 Now, given that you tested negative, the probability that you have the disease is `r post2`. Chances are pretty good you don't have anything!
+
+####Ex 4-3
+
+Suppose a population of $100,000$ people. Our distribution would look like Table 1, below.
+
+```{r, echo=FALSE, results='asis'}
+
+
+kable()
+```
+
