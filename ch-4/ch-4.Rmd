@@ -31,9 +31,16 @@ Now, given that you tested negative, the probability that you have the disease i
 
 Suppose a population of $100,000$ people. Our distribution would look like Table 1, below.
 
-```{r, echo=FALSE, results='asis'}
+```{r, echo=FALSE, results='asis', message=FALSE}
+require(knitr)
 
+a1 <- .99*.001
+a2 <- .05*.999
+a3 <- 0.01*0.001
+a4 <- .95*.999
 
-kable()
+mat <- matrix(c(a1,a2,a3,a4), byrow=TRUE, nrow=2, dimnames = list(c("Negative Test", "Positive Test"), c("Disease", "No Disease")))
+
+kable(mat*100000)
 ```
 
