@@ -5,7 +5,7 @@ date: "Wednesday, September 17, 2014"
 output: html_document
 ---
 
-*5-1*
+**5-1**
 
 Note: The dashed line represents the posterior distribution, while the solid line represents the prior.
 
@@ -37,3 +37,94 @@ lines(seq(0,1,0.01), dbeta(seq(0,1,0.01), 6, 4))
 ```
 
 It is important to note here that order does not matter - because the densities are conjugate, they are commutative. Each additional flip causes the posterior distribution to change.
+
+
+**5-2**
+
+**A)** The 95% HDI on the uniform distribution is $[0.025, 0.975]$.  
+
+```{r, echo=FALSE}
+x <- seq(0, 1, by=0.01)
+y <- dunif(seq(0, 1, by=0.01))
+
+plot(x, y, type="h")
+lines(x,y)
+
+polygon(c(0.025,0.025, 0.975, 0.975), c(0,1,1,0), col="red")
+```
+
+**B)** No, it probably isn't.  It's probably closer to 57%, though we don't know how close.
+
+**C)** The prior was $Y ~ B\left(58, 42\right)$, where $Y$ is the true proportion who voted for candidate A.  In the follow up poll, we polled 100 more people, and 57 preferred candidate A.  Thus, our new proportion is 
+
+$$B\left(58 + 57, 42 + 43\right) \Rightarrow B\left(115, 85\right),$$
+
+which has the following distribution.
+
+```{r beta dist, echo=FALSE}
+plot(x, dbeta(x, 115, 85), type="l", ylab = "Density", xlab="Y")
+
+x_lims <- qbeta(seq(0.025, 0.975, by=0.01), 115, 85)
+low <- qbeta(0.025, 115, 85)
+high <- qbeta(0.975, 115, 85)
+y_lims <- c(0,dbeta(x_lims, 115, 85),0)
+x_lims <- c(low, x_lims, high)
+
+polygon(x_lims, y_lims, col="skyblue")
+```
+
+**D)** No, it is not credible to think this, since the 95% HDI is $\left[0.51, 0.64\right]$.
+
+**5-3**
+
+For the first experiment, 40 people chose F and 10 chose J.  In the next iteration, 15 chose F and 35 chose J.  Are people biased toward F or J?
+
+```{r plots again, echo=FALSE}
+x <- seq(0,1, by=0.01)
+prior <- dbeta(seq(0,1, by=0.01), 40, 15)
+posterior <- dbeta(x, 40+15, 10+35)
+
+plot(x, prior, type="l", ylim=c(0,8.5), ylab="density", xlab="")
+lines(x, posterior, type="l", lty=2)
+
+prior_cred <- qbeta(c(0.025, 0.975), 40, 15)
+post_cred <- qbeta(c(0.025, 0.975), 55, 40)
+```
+
+In the first experiment, there is certainly evidence that people are biased toward J- according to the data, there is about a $73\%$ chance that the bias toward F was over 50%.  Alternatively, the 95% HDI was $\left[0.60, 0.84\right]$, with 0.5 well outside this range.
+
+However, using these same evaluation approaches for the second dataset, the 95% HDI is $\left[0.48, 0.68\right]$, with 50% within the interval.  Further, there is roughly only a 44% chance that the bias toward F is above 50% now.
+
+For anyone reading on Github - does this mean that the bias toward J is now above 50%?  Or, did I interpret everything wrong to begin with?
+
+**5-4**
+
+Let's assume that $Y ~ B\left(0.5,0.5\right)$, where $Y$ is the proportion of coin flips that are heads. Then, suppose we flip a coin 5 times and see 4 heads.  The new posterior distribution is $B\left(4.5,1.5\right)$, and distributed
+
+```{r, echo=FALSE}
+plot(x, dbeta(x, 4.5, 1.5), type = "l", lty=2)
+lines(x, dbeta(x, 0.5,0.5))
+```
+
+
+
+**5-5**
+
+**A)** For the coin minted by the federal government, I would be relatively certain that it is fair.  Subjectively (just based on gut feeling), I believe that $Y \sim B\left(\alpha=1000, \beta=1000\right)$. This is an extremely strong prior, but I believe understandably so. A coin minted by the federal government is subject to strict quality controls and industrial processing.  I'm assuming that this process is relatively symmetrical in order to get each coin to be so similar.  Our posterior distribution thus becomes $B\left(1009, 1001\right)$.  Visually,
+
+```{r, echo=FALSE}
+plot(x, dbeta(x, 1009, 1001), type = "l", lty=2)
+lines(x, dbeta(x, 1000,1000))
+```
+
+There is hardly any change, based on my extremely strong prior.
+
+**B)** This time, for our prior distribution, we will use the "magic" coin from Exercise 5.4.  In this case, the prior distribution was $B\left(.5, .5\right)$.  We use this as our prior since we do not know whether or not the bias is heads or tails, but we are relatively certain that a bias does exist (it's a magic coin, after all - if there were no bias, how could it be magic?)
+
+After flipping the coin 10 times and getting 9 heads, our new posterior distribution is $B\left(9.5, 1.5 \right)$.  Visually, 
+```{r}
+plot(x, dbeta(x, 9.5, 1.5), type = "l", lty=2)
+lines(x, dbeta(x, .5,.5))
+```
+
+Our posterior distribution is thus strongly biased heads, based on our relatively weak prior.
