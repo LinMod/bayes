@@ -1,7 +1,9 @@
 coin <- c("H", "T")
 
 ani.options(interval=.1)
-saveGIF({
+
+
+saveHTML({
   for(i in 1:100){
     toss <- sample(coin, 1, replace=TRUE)
     if(i==1){
