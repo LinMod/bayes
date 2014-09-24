@@ -14,4 +14,34 @@ source("ch6.R")
 
 **A)** The value of `sum(approxMass)` is `r sum(approxMass)`. This is less than 1 because it is not using the analytical solution - instead, this is a numerical approximation of the beta distribution.  
 
-**B)** We cannot use theta on the interval from 0 to 1.  We must use the midpoints.  Using 0 and 1 as endpoints gives an incorrect numerical approximation.  While the widths are the same as the other rectangles, the edges actually extend outside of the beta distribution, giving an over-approximation of the area.  Indeed, using such a parameterization, we see a total probability estimate of **insert new estimate here**
+```{r wrong, echo=FALSE}
+nIntervals <- 10
+width <- 1/nIntervals
+
+theta <- seq(from = 0, to = 1, by=width)
+
+approxMass <- dbeta(theta, 8, 4) * width
+
+ptheta <- approxMass/sum(approxMass)
+
+```
+
+
+**B)** We cannot use theta on the interval from 0 to 1.  We must use the midpoints.  Using 0 and 1 as endpoints gives an incorrect numerical approximation.  While the widths are the same as the other rectangles, the edges actually extend outside of the beta distribution, giving an over-approximation of the area.  Indeed, using such a parameterization, we see a total probability estimate of `r sum(approxMass)`, which is clearly impossible.
+
+**6-2)** We'll use the example from the book, for ease and convenience (it's late.)
+
+**A)**
+
+```{r prior, echo=TRUE}
+ptheta <- c(50:1, rep(1, 50), 1:50)
+ptheta <- ptheta/sum(ptheta)
+
+width = 1/length(ptheta)
+
+theta = seq(from=width/2, to=1-width/2, by=width)
+```
+
+**B)** Now that we have set the prior, consider the posterior.  
+
+Come back - this will be more worth it tomorrow.
