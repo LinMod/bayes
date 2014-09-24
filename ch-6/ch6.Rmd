@@ -1,0 +1,17 @@
+---
+title: "Chapter 6 Exercises"
+author: "LinMod"
+date: "Tuesday, September 23, 2014"
+output: pdf_document
+---
+
+```{r init, echo=FALSE, cache=TRUE}
+
+source("ch6.R")
+
+```
+**6-1**
+
+**A)** The value of `sum(approxMass)` is `r sum(approxMass)`. This is less than 1 because it is not using the analytical solution - instead, this is a numerical approximation of the beta distribution.  
+
+**B)** We cannot use theta on the interval from 0 to 1.  We must use the midpoints.  Using 0 and 1 as endpoints gives an incorrect numerical approximation.  While the widths are the same as the other rectangles, the edges actually extend outside of the beta distribution, giving an over-approximation of the area.  Indeed, using such a parameterization, we see a total probability estimate of **insert new estimate here**
