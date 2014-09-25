@@ -5,10 +5,10 @@ date: "Tuesday, September 23, 2014"
 output: pdf_document
 ---
 
-```{r init, echo=FALSE, cache=TRUE}
+```{r init, echo=FALSE}
 
 source("ch6.R")
-
+source("BernGrid.r")
 ```
 **6-1**
 
@@ -42,6 +42,77 @@ width = 1/length(ptheta)
 theta = seq(from=width/2, to=1-width/2, by=width)
 ```
 
-**B)** Now that we have set the prior, consider the posterior.  
+**B)** Suppose now that we flip a coin 20 times and get 15 heads. What are our new posterior beliefs?  We use `BernGrid.r` to find out.  After typing it out for several minutes, I decided it was worth copy and pasting instead from the official website.  
 
-Come back - this will be more worth it tomorrow.
+```{r berngrid, echo=FALSE, fig.height=6.5}
+source("BernGrid.r")
+setwd("~/Documents/GitHub/bayes/ch-6")
+data = c(rep(1, 15), rep(0,5))
+
+tmp <- BernGrid(theta, ptheta, data)
+
+```
+
+**6-3** 
+
+**A)** This time, we use the same prior as before.  However, we flip a coin 4 times and get 3 heads.
+
+```{r bern2, echo=FALSE, fig.height=6.5}
+data <- c(1,1,1,0)
+
+ptheta <- BernGrid(theta, ptheta, data)
+```
+
+**B)** Now, let's do some updating, with 16 flips and 12 heads.  Using the previous posterior distribution as our prior, we see a different result.
+
+```{r bern3, echo=FALSE, fig.height=6.5}
+data <- c(rep(1,12), rep(0,4))
+ptheta <- BernGrid(theta, ptheta, data)
+```
+
+**6-4**
+
+**A)** Our prior is a standard uniform distribution.
+```{r unifprior, echo=TRUE, results='asis', fig.height=6.5}
+theta <- seq(0,1, by=0.005)
+ptheta <- dunif(theta)/sum(theta)
+data <- c(rep(1,58), rep(0,42))
+
+ptheta <- BernGrid(theta, ptheta, data)
+```
+
+This means that the 95% HDI is $\left[0.48, 0.67\right]$.
+
+**B)** Based on this information, yes, it's somewhat plausible to believe that the population is divided equally.  The HDI contains $50\%$, so the notion that $\theta=0.5$ isn't far outside the realm of possibility.
+
+**C)** However, once we take another follow up poll, we get another 100 people.  Using the results of our previous poll as our prior distribution gives us very different results.
+
+```{r poll, echo=FALSE, results='asis', fig.height=6.5}
+data <- c(rep(1,57), rep(0,43))
+ptheta <- BernGrid(theta, ptheta, data)
+
+```
+
+Now, $\theta=0.5$ is outside our highest density interval, and it doesn't really make sense to believe that candidate A is preferred over candidate B.
+
+**6-5**
+
+**A)** If you are trying to convince the CEO that less than 10% of widgets are defective, this depends on your prior distribution.  No previous data is available, so realistically, there are three options for the analysis.
+
+* Option 1: Assume a uniform prior.  This is supposed to be noninformative, though of course, this is not the case in practice.  Instead, this prior assumes that all values are equally likely, which will in fact be the most conservative estimate - it will take more evidence to overcome this prior when compared to option 2...
+
+* Option 2: Assume a prior beta distribution with mean = 10, and make the overall strength of this prior relatively weak.  This is somewhat akin to hypothesis testing in the frequentist paradigm, but the biggest problem is assigning your strength of belief to this prior.  
+
+We will choose option 1, since it is the most conservative.  
+
+```{r widgets, echo=FALSE, fig.height=6.5}
+theta <- seq(0,1, 0.005)
+ptheta <- dunif(theta)/sum(theta)
+
+data <- c(rep(1,28), rep(0, 500-28))
+
+ptheta <- BernGrid(theta, ptheta, data)
+```
+
+Given this data, it would be right to tell the CEO that the probability of a defect is less than 10%.  In fact, there is about a 97% chance that $\theta \in \left[0.04, 0.08\right]$.
+
