@@ -107,7 +107,7 @@ We will choose option 1, since it is the most conservative.
 
 ```{r widgets, echo=FALSE, fig.height=6.5}
 theta <- seq(0,1, 0.01)
-ptheta <- dunif(theta)/sum(theta)
+ptheta <- dunif(theta)
 
 data <- c(rep(1,28), rep(0, 500-28))
 
@@ -116,12 +116,41 @@ ptheta <- BernGrid(theta, ptheta, data)
 
 Given this data, it would be right to tell the CEO that the probability of a defect is less than 10%.  In fact, there is about a 97% chance that $\theta \in \left[0.04, 0.08\right]$.
 
-```{r quadratic, echo=FALSE}
+
+**6-6**
+
+Suppose we think a coin is biased towards tails such that $P(\theta) = \theta^2$. Then, suppose we flip a coin and see 2 heads and 2 tails.  Our new posterior distribution is below.
+
+```{r quadratic, echo=FALSE, fig.height=6.5}
 theta <- seq(0, 1, 0.01)
 prior <- theta^2/sum(theta^2)
 
-observed <- c(1, 1, 0, 0)
+data <- c(1, 1, 0, 0)
 
+ptheta <- BernGrid(theta, prior, data)
 
 ```
 
+**6-8** We're going to skip to 6-8.
+
+Suppose we have a study with 50 couples. After taking an experimental drug, 30 of them have boys, and 20 of them have girls.
+
+**A)** An appropriate prior distribution would be to assume that the drug does not work at all. Thus, any evidence we find to the contrary must overcome the prior. However, we must also assume a certain level of certainty.  For this, we will use the sample size of the experiment we ran, and say that our prior belief is that $\theta \sim \beta(25, 25)$.
+
+**B)** Using our `BernGrid` function, we define a prior and posterior in this way.
+
+```{r drug, fig.height=6.5, results='asis', echo=FALSE}
+intervals  <- 100
+binwidth <- 1/intervals
+
+theta <- seq(binwidth,1 - binwidth, by=0.01)
+ptheta <- dbeta(theta, 25, 25)*binwidth
+
+data <- c(rep(1, 30), rep(0, 20))
+
+post <- BernGrid(theta, ptheta, data)
+```
+
+Given these results, it is certainly credible to assume that a couple who takes the drug has a 50% chance of conceiving a boy. In fact, it is credible to assume any probability $\in \left[0.45, 0.64\right]$
+
+**C)**
