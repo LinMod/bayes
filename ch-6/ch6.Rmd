@@ -106,7 +106,7 @@ Now, $\theta=0.5$ is outside our highest density interval, and it doesn't really
 We will choose option 1, since it is the most conservative.  
 
 ```{r widgets, echo=FALSE, fig.height=6.5}
-theta <- seq(0,1, 0.005)
+theta <- seq(0,1, 0.01)
 ptheta <- dunif(theta)/sum(theta)
 
 data <- c(rep(1,28), rep(0, 500-28))
@@ -115,4 +115,13 @@ ptheta <- BernGrid(theta, ptheta, data)
 ```
 
 Given this data, it would be right to tell the CEO that the probability of a defect is less than 10%.  In fact, there is about a 97% chance that $\theta \in \left[0.04, 0.08\right]$.
+
+```{r quadratic, echo=FALSE}
+theta <- seq(0, 1, 0.01)
+prior <- theta^2/sum(theta^2)
+
+observed <- c(1, 1, 0, 0)
+
+
+```
 
